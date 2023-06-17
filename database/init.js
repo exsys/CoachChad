@@ -1,6 +1,7 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 
-const dbConn = mongoose.connect("mongodb://127.0.0.1:27017/Discord", { serverSelectionTimeoutMS: 60000 })
+const dbConn = mongoose.connect(process.env.DB_STRING, { serverSelectionTimeoutMS: 60000 })
     .then(m => m.connection.getClient())
     .catch(err => console.log(err));
 
