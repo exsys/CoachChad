@@ -30,6 +30,11 @@ module.exports = {
             return;
         }
 
+        if (!allHabits.length) {
+            await interaction.editReply("Error: No habits exist currently.");
+            return;
+        }
+
         let selectHabits = [];
         for (const habit of allHabits) {
             selectHabits.push(
@@ -54,6 +59,7 @@ module.exports = {
                 components: [row]
             });
         } catch (error) {
+            console.log(error);
             await interaction.editReply("Error: Something went wrong. Please try again later.");
             return;
         }
