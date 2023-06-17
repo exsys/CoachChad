@@ -79,35 +79,40 @@ module.exports = {
 
         // ensures that only the user that was asked can react
         const collectorFilter = i => i.user.id === partner.discordId;
-        const confirmation = await post.awaitMessageComponent({
-            time: 600000,
-            filter: collectorFilter,
-        });
-
-        if (confirmation.customId === "yes") {
-            user.partner = {
-                discordId: partner.discordId,
-                username: partner.username,
-            };
-            partner.partner = {
-                discordId: user.discordId,
-                username: user.username,
-            };
-
-            try {
-                await user.save();
-                await partner.save();
-                await interaction.editReply("Successfully teamed up!");
-                await confirmation.update({ content: "Successfully teamed up!" });
-            } catch (error) {
-                await interaction.editReply("Error: Couldn't connect to the database. Please try again later.");
-                return;
+        try {
+            const confirmation = await post.awaitMessageComponent({
+                time: 600000,
+                filter: collectorFilter,
+            });
+            
+            if (confirmation.customId === "yes") {
+                user.partner = {
+                    discordId: partner.discordId,
+                    username: partner.username,
+                };
+                partner.partner = {
+                    discordId: user.discordId,
+                    username: user.username,
+                };
+    
+                try {
+                    await user.save();
+                    await partner.save();
+                    await interaction.editReply("Successfully teamed up!");
+                    await confirmation.update({ content: "Successfully teamed up!" });
+                } catch (error) {
+                    await interaction.editReply("Error: Couldn't connect to the database. Please try again later.");
+                    return;
+                }
             }
+    
+            if (confirmation.customId === "no") {
+                await interaction.editReply(`User declined team up.`);
+                await confirmation.update({ content: `<@${partner.discordId}> said they don't like you so they won't team up with you.` })
+            }
+        } catch (error) {
+            await interaction.editReply({ content: 'No confirmation received, cancelling.', components: [] });
         }
 
-        if (confirmation.customId === "no") {
-            await interaction.editReply(`User declined team up.`);
-            await confirmation.update({ content: `<@${partner.discordId}> said they don't like you so they won't team up with you.` })
-        }
     }
 }
