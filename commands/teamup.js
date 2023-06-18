@@ -14,6 +14,8 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
 
+        // TODO: don't let team up if somebody already has a partner
+
         let user;
         let partner;
         let settings;

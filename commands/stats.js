@@ -41,14 +41,7 @@ module.exports = {
             const msgEmbed = new EmbedBuilder()
                 .setColor(0x424549)
                 .setTitle(`${user.username}'s stats`)
-                .setDescription(`
-                    **Your timezone**: GMT ${(user.timezone < 0) ? user.timezone : `+${user.timezone}`}
-                    ${partnerLine}
-                    **Current Points**: ${user.totalPoints}
-                    **Points stolen from others**: ${user.pointsStolen}
-                    **Points lost**: ${user.pointsLost}
-                    **Current habits**: ${usersHabits}
-                `)
+                .setDescription(`**Your timezone**: GMT ${(user.timezone < 0) ? user.timezone : `+${user.timezone}`}\n${partnerLine}\n**Current Points**: ${user.totalPoints}\n**Points stolen from others**: ${user.pointsStolen}\n**Points lost**: ${user.pointsLost}\n**Current habits**: ${usersHabits}\n`)
                 .addFields(
                     { name: "Notice", value: "If you want to change your timezone use the command /changetimezone." },
                 );
