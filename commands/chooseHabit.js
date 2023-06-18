@@ -42,7 +42,7 @@ module.exports = {
                     .setLabel(habit.name)
                     .setDescription(habit.description)
                     .setValue(habit.name),
-            )
+            );
         }
 
         const select = new StringSelectMenuBuilder()
@@ -86,6 +86,11 @@ module.exports = {
             return;
         }
 
+        if (user.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
+            return;
+        }
+
         // ensures that only the user who triggered the original interaction can use the buttons.
         const collectorFilter = i => i.user.id === interaction.user.id;
 
@@ -108,14 +113,13 @@ module.exports = {
 
                     // add habit to user
                     const habit = allHabits.find(habit => habit.name === confirmation.values[0]);
-                    const now = Date.now();
                     const userHabit = {
                         habitId: habit.habitId,
                         name: habit.name,
                         description: habit.description,
                         pointsWorth: habit.pointsWorth,
-                        lastCheckinTime: now,
-                        nextSubmissionTime: now,
+                        lastCheckinTime: 0,
+                        nextSubmissionTime: 0,
                     }
                     user.habits.push(userHabit);
 

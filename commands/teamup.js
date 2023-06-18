@@ -14,8 +14,6 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
 
-        // TODO: don't let team up if somebody already has a partner
-
         let user;
         let partner;
         let settings;
@@ -48,13 +46,33 @@ module.exports = {
             return;
         }
 
+        if (user.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
+            return;
+        }
+
         if (!partner) {
             await interaction.editReply("The user you want to team up with doesn't exist in the database yet.");
             return;
         }
 
+        if (partner.banned) {
+            await interaction.editReply("Sorry pal, but the person you want to team up with is banned.");
+            return;
+        }
+
         if (user.discordId === partner.discordId) {
             await interaction.editReply("Look at this smart-ass over here. You think you can trick Coach Chad, huh? GET IMPROVING!");
+            return;
+        }
+
+        if (user.partner) {
+            await interaction.editReply("Trying to two-time, huh? That's not a good thing to do my friend!");
+            return;
+        }
+
+        if (partner.partner) {
+            await interaction.editReply("The user you want to partner with already has a partner. Sorry pal.");
             return;
         }
 

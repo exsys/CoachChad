@@ -27,13 +27,8 @@ module.exports = {
             robber = await User.findOne({ discordId: interaction.user.id });
             target = await User.findOne({ discordId: interaction.options.get("user").value });
         } catch (error) {
-            try {
-                await interaction.editReply("Error: couldn't connect to database. Please try again later.");
-                return;
-            } catch (error) {
-                console.log("0010");
-                return;
-            }
+            await interaction.editReply("Error: couldn't connect to database. Please try again later.");
+            return;
         }
 
         if (!settings) {
@@ -51,16 +46,27 @@ module.exports = {
             return;
         }
 
+        if (!robber) {
+            await interaction.editReply("Only participants can call this command. Please choose a habit first.");
+            return;
+        }
+
+        if (robber.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
+            return;
+        }
+
+        if (!target) {
+            await interaction.editReply("The target isn't participating yet.");
+            return;
+        }
+
         if (robber.discordId === target.discordId) {
             await interaction.editReply("Well... kinda weird to steal from yourself, but you do you man.");
         }
 
         if (target.totalPoints < 1) {
-            try {
-                await interaction.editReply("User has no points left.");
-            } catch (error) {
-                console.log("error 0020");
-            }
+            await interaction.editReply("User has no points left.");
             return;
         }
 
@@ -68,7 +74,7 @@ module.exports = {
         let amountStolen = 0;
         for (const habit of target.habits) {
             if (habit.lastTimeStolen === 0) {
-                if (habit.nextSubmissionTime + HOURS_24_IN_MS < Date.now()) {
+                if (habit.nextSubmissionTime + HOURS_24_IN_MS < Date.now() && habit.nextSubmissionTime !== 0) {
                     amountStolen++;
                     robber.pointsStolen++;
                     robber.totalPoints++;
@@ -77,7 +83,7 @@ module.exports = {
                     habit.lastTimeStolen = Date.now();
                 }
             } else {
-                if (habit.lastTimeStolen + HOURS_24_IN_MS < Date.now()) {
+                if (habit.lastTimeStolen + HOURS_24_IN_MS < Date.now() && habit.nextSubmissionTime !== 0) {
                     amountStolen++;
                     robber.pointsStolen++;
                     robber.totalPoints++;
@@ -117,7 +123,7 @@ module.exports = {
             });
         }
 
-        // only save users if at least 1 point was stolen
+        // only update users if at least 1 point was stolen
         if (amountStolen >= 1) {
             try {
                 await robber.save();

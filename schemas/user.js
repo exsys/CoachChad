@@ -85,6 +85,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    banned: {
+        type: Boolean,
+        default: false,
+    },
     totalPoints: {
         type: Number,
         default: 0,

@@ -59,23 +59,18 @@ module.exports = {
         }
 
         if (!callOuter) {
-            try {
-                await interaction.editReply("Only participants can call out others, please choose a habit first!");
-                return;
-            } catch (error) {
-                console.log("error 0002");
-                return;
-            }
+            await interaction.editReply("Only participants can call out others, please choose a habit first!");
+            return;
+        }
+
+        if (callOuter.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
+            return;
         }
 
         if (!user) {
-            try {
-                await interaction.editReply("The user you want to call out isn't participating yet.");
-                return;
-            } catch (error) {
-                console.log("error 0003");
-                return;
-            }
+            await interaction.editReply("The user you want to call out isn't participating yet.");
+            return;
         }
 
         let hasHabit;
@@ -91,6 +86,11 @@ module.exports = {
                 console.log("error 0004");
                 return;
             }
+        }
+
+        if (hasHabit.nextSubmissionTime === 0) {
+            await interaction.editReply("The user didn't submit a proof for that habit yet.");
+            return;
         }
 
         const msgEmbed = new EmbedBuilder()

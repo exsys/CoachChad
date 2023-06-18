@@ -29,12 +29,18 @@ module.exports = {
         let user;
         try {
             user = await User.findOne({ discordId: interaction.user.id });
-            if (!user) {
-                await interaction.editReply("User not in database yet. Please choose a habit first.");
-                return;
-            }
         } catch (error) {
             await interaction.editReply("Error: Couldn't connect to the database. Please try again later.");
+            return;
+        }
+
+        if (!user) {
+            await interaction.editReply("User not in database yet. Please choose a habit first.");
+            return;
+        }
+
+        if (user.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
             return;
         }
 

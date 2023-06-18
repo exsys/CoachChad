@@ -2,10 +2,12 @@ const { SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuil
 const User = require("../schemas/user");
 
 module.exports = {
-    data: new SlashCommandBuilder().setName("changetimezone").setDescription("Changes your timezone."),
+    data: new SlashCommandBuilder().setName("changetimezone").setDescription("Currently disabled."),
     onlyAdmin: false,
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
+        await interaction.editReply("This command is currently disabled.");
+        return;
 
         // create timezone select
         let timezoneSelect = [];
@@ -55,6 +57,11 @@ module.exports = {
                 const user = await User.findOne({ discordId: interaction.user.id });
                 if (!user) {
                     await confirmation.update({ content: "Couldn't find user. Please choose a habit first." });
+                    return;
+                }
+
+                if (user.banned) {
+                    await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
                     return;
                 }
 

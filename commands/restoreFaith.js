@@ -63,38 +63,27 @@ module.exports = {
         }
 
         if (!user) {
-            try {
-                await interaction.editReply("Only participants can do this. Please choose a habit first.");
-            } catch (error) {
-                console.log("error 0010");
-            }
+            await interaction.editReply("Only participants can do this. Please choose a habit first.");
+            return;
+        }
+
+        if (user.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
             return;
         }
 
         if (!target) {
-            try {
-                await interaction.editReply("User isn't participating yet.");
-            } catch (error) {
-                console.log("error 0007");
-            }
+            await interaction.editReply("User isn't participating yet.");
             return;
         }
 
         if (user.discordId === target.discordId) {
-            try {
-                await interaction.editReply("Look at this smart-ass over here. You think you can trick Coach Chad, huh? GET IMPROVING!");
-            } catch (error) {
-                console.log("error 0016");
-            }
+            await interaction.editReply("Look at this smart-ass over here. You think you can trick Coach Chad, huh? GET IMPROVING!");
             return;
         }
 
         if (user.totalPoints < 1) {
-            try {
-                await interaction.editReply("You don't have any points to give away.");
-            } catch (error) {
-                console.log("error 0015");
-            }
+            await interaction.editReply("You don't have any points to give away.");
             return;
         }
 
@@ -103,8 +92,8 @@ module.exports = {
             if (habit.name === interaction.options.get("habit").value) {
                 hasHabit = habit;
 
-                // if last time submitted was over 3 days ago
-                if (habit.lastCheckinTime + HOURS_24_IN_MS * 3 < Date.now()) {
+                // if last time submitted was over 3 days ago && user did at least one submission
+                if (habit.lastCheckinTime + HOURS_24_IN_MS * 3 < Date.now() && habit.nextSubmissionTime !== 0) {
                     if (!habit.restoredBy) {
                         habit.restoredBy = {
                             discordId: interaction.user.id,

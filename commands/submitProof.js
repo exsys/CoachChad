@@ -30,6 +30,11 @@ module.exports = {
             return;
         }
 
+        if (user.banned) {
+            await interaction.editReply("Sorry pal, but you are not allowed to use commands for this season.");
+            return;
+        }
+
         if (!user.habits) {
             await interaction.editReply("Please select a habit first.");
             return;
@@ -95,7 +100,7 @@ module.exports = {
                 provingHabit.lastCheckinTime = currentTime;
 
                 // only give points to user if it's their first submission for the day
-                if (currentTime >= provingHabit.nextSubmissionTime) {
+                if (currentTime >= provingHabit.nextSubmissionTime || provingHabit.nextSubmissionTime === 0) {
                     // convert users local time to a UTC timestamp
                     // TODO: if there's an error even once with timezone try just adding the timezone to currentTime
                     const usersTimezoneInMs = user.timezone * 60 * 60 * 1000;

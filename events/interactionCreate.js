@@ -20,7 +20,7 @@ module.exports = {
             });
 
             if (!userIsAdmin) {
-                await interaction.reply({ content: "Bad boy! Only Masters are allowed to use this.", ephemeral: true });
+                await interaction.reply({ content: "Stop right there! This command is only for real Chads!", ephemeral: true });
                 return;
             }
         }

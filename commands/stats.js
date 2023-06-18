@@ -41,10 +41,9 @@ module.exports = {
             const msgEmbed = new EmbedBuilder()
                 .setColor(0x424549)
                 .setTitle(`${user.username}'s stats`)
-                .setDescription(`**Your timezone**: GMT ${(user.timezone < 0) ? user.timezone : `+${user.timezone}`}\n${partnerLine}\n**Current Points**: ${user.totalPoints}\n**Points stolen from others**: ${user.pointsStolen}\n**Points lost**: ${user.pointsLost}\n**Current habits**: ${usersHabits}\n`)
-                .addFields(
-                    { name: "Notice", value: "If you want to change your timezone use the command /changetimezone." },
-                );
+                .setDescription(`${partnerLine}\n**Current Points**: ${user.totalPoints}\n**Points stolen from others**: ${user.pointsStolen}\n**Points lost**: ${user.pointsLost}\n**Current habits**: ${usersHabits}\n`)
+                //.setDescription(`**Your timezone**: GMT ${(user.timezone < 0) ? user.timezone : `+${user.timezone}`}\n${partnerLine}\n**Current Points**: ${user.totalPoints}\n**Points stolen from others**: ${user.pointsStolen}\n**Points lost**: ${user.pointsLost}\n**Current habits**: ${usersHabits}\n`)
+                .setFooter({ text: "Opportunities don't happen, you create them.", iconURL: "https://datepsychology.com/wp-content/uploads/2022/09/gigachad.jpg" });
 
             await interaction.editReply({ embeds: [msgEmbed] });
             return;
