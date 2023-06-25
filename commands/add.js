@@ -3,7 +3,7 @@ const Habit = require("../schemas/habit");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("addhabit")
+        .setName("add")
         .setDescription("Add a habit to the database.")
         .addStringOption(option => option.setName("name")
             .setDescription("The name of the habit you want to add.")

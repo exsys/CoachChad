@@ -3,8 +3,8 @@ const Habit = require("../schemas/habit");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("removehabit")
-        .setDescription("Removes a habit from the list. Users won't be able to select that habit anymore."),
+        .setName("delete")
+        .setDescription("Deletes a habit from the list. Users won't be able to select that habit anymore."),
     onlyAdmin: true,
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
