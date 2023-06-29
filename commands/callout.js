@@ -116,8 +116,9 @@ module.exports = {
             };
             callOuter.calledOut.push(calledOutObj);
             await callOuter.save();
-            if (robber.discordId === target.discordId) {
-                await interaction.editReply("Nothing beats self-motivation, huh? I like that!");
+
+            if (callOuter.discordId === user.discordId) {
+                await interaction.editReply("Holding yourself accountable is a good thing. Keep it up!");
             } else {
                 await interaction.editReply("Call out successful");
             }
