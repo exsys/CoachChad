@@ -1,6 +1,6 @@
 # Coach Chad
 A discord game bot that lets users choose and improve specific habits.  
-Users can then upload images to "proof" that they actually did a habit for the day to receive points.  
+Users can then upload images to prove that they actually completed a habit for a given day to receive points.  
 The bot includes a lot of gamefied aspects to help users improve their selected habits.  
 
 ## Usage
