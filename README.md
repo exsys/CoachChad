@@ -5,5 +5,8 @@ The bot includes a lot of gamefied aspects to help users improve their selected 
 
 ## Usage
 After cloning the repo run "npm install" to install all dependencies.  
-Run "npm run start" to start the bot.  
-Don't forget to create a .env file with the bot's token and the bot's app id.  
+Run "npm run start" to start the bot.
+Requirements for the bot to work (key stored in .env file): 
+- Bot token (BOT_TOKEN)
+- Bot app id (APP_ID)
+- MongoDB connection string (DB_STRING)
